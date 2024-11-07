@@ -1,0 +1,15 @@
+{
+  "name": "currency_exchange_application",
+  "version": "1.0.0",
+  "scripts": {
+    "start-server": "npm run start --prefix=./server",
+    "start-client": "npm run start --prefix=./client",
+    "build-client": "npm run build --prefix=./client"
+    },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+  }
+}
