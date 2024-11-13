@@ -10,6 +10,9 @@ const CONVERT_TO_FROM = `
 						JOIN rate AS r3 ON r1.date = r3.date AND r3.currency_id = ?
 						WHERE r1.currency_id = ? AND r1.date = ?`;
 
+const SELECT_CURRENCY_BY_ID = "SELECT * FROM currency WHERE _id = ?;";
+
+
 let db = new sqlite3.Database("./stores/currency.db", sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		console.error(err.message);
@@ -17,13 +20,19 @@ let db = new sqlite3.Database("./stores/currency.db", sqlite3.OPEN_READWRITE, (e
 	console.log("Connected to the database!");
 });
 
+function isCurrency(id, cb) {
+	db.get(SELECT_CURRENCY_BY_ID, id, (err, row) => {
+		return cb(row && !err);
+	})
+}
+
 function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) {
     db.get(CONVERT_TO_FROM, [to, from, date], (err, row) => {
 		if (err) {
 			console.error(err.message);
-			cb(err, null);
+			return cb(err, null);
 		} else {
-			cb(null, row);
+			return cb(null, row);
 		}
     });
 }
@@ -32,14 +41,15 @@ function getAllRatesByDate(date, cb) {
     db.all(SELECT_RATE_BY_DATE, [date], (err, rows) => {
 		if (err) {
 			console.error(err.message);
-			cb(err, null);
+			returncb(err, null);
 		} else {
-			cb(null, rows);
+			return cb(null, rows);
 		}
     });
 }
 
 export {
     getAllRatesByDate,
-	getConversionRateToFrom
+	getConversionRateToFrom,
+	isCurrency
 };
