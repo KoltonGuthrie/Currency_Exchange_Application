@@ -65,7 +65,7 @@ app.get("/api/exchange/convert", (req, res) => {
 				}
 
 				if (!row) {
-					result.error = "Failed to find conversion... This should NEVER happen!";
+					result.error = "Your query did not return any results. Please try again.";
 
 					return res.send(result);
 				}
