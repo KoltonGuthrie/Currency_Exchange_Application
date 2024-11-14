@@ -33,6 +33,7 @@ https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={
 app.get("/api/exchange/convert", (req, res) => {
 	const result = { success: false, error: "Internal Server Error." };
 	res.setHeader("Content-Type", "application/json");
+	res.status(500);
 
 	const CONVERT_TO = req.query.to;
 	const CONVERT_FROM = req.query.from;
@@ -41,18 +42,24 @@ app.get("/api/exchange/convert", (req, res) => {
 
 	if (!CONVERT_TO || !CONVERT_FROM || !CONVERT_AMOUNT || !CONVERT_DATE) {
 		result.error = "Query 'to', 'from' and 'amount' are required!";
+
+		res.status(400);
 		return res.send(result);
 	}
 
 	Database.isCurrency(CONVERT_TO, (IS_CUR) => {
 		if (!IS_CUR) {
 			result.error = CONVERT_TO + " is not a value currency!";
+
+			res.status(400);
 			return res.send(result);
 		}
 
 		Database.isCurrency(CONVERT_FROM, (IS_CUR) => {
 			if (!IS_CUR) {
 				result.error = CONVERT_FROM + " is not a value currency!";
+
+				res.status(400);
 				return res.send(result);
 			}
 
@@ -61,12 +68,14 @@ app.get("/api/exchange/convert", (req, res) => {
 					console.error(err);
 					result.error = err.message;
 
+					res.status(400);
 					return res.send(result);
 				}
 
 				if (!row) {
 					result.error = "Your query did not return any results. Please try again.";
 
+					res.status(400);
 					return res.send(result);
 				}
 
@@ -82,7 +91,8 @@ app.get("/api/exchange/convert", (req, res) => {
 				};
 				result.date = CONVERT_DATE;
 				result.result = row.converted_rate * CONVERT_AMOUNT;
-
+				
+				res.status(200);
 				return res.send(result);
 			});
 		});
