@@ -8,13 +8,6 @@ app.use(express.json());
 app.use(cors());
 app.use("/", express.static("public"));
 
-/*{
-    "success": true,
-    "symbols": {
-        "AED": "United 
-
-*/
-
 app.get("/api/exchange/symbols", (req, res) => {
 	const result = { success: false, error: "Internal Server Error." };
 	res.setHeader("Content-Type", "application/json");
@@ -41,28 +34,6 @@ app.get("/api/exchange/symbols", (req, res) => {
 		return res.send(result);
 	});
 });
-
-/*
-
-Date is optional
-https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}&date={YYYY-MM-DD}"
-
-{
-  "date": "2018-02-22",
-  "historical": "",
-  "info": {
-    "rate": 148.972231,
-    "timestamp": 1519328414
-  },
-  "query": {
-    "amount": 25,
-    "from": "GBP",
-    "to": "JPY"
-  },
-  "result": 3724.305775,
-  "success": true
-}
-*/
 
 app.get("/api/exchange/convert", (req, res) => {
 	const result = { success: false, error: "Internal Server Error." };
