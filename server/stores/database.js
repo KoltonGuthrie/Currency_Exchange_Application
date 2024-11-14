@@ -91,7 +91,7 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 				}
 
 				if(!data) {
-					let error = "No data was returned from external api.";
+					let error = {message: "No data was returned from external api."};
 					return cb(error, null);
 				}
 
@@ -100,7 +100,7 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 				}
 
 				if(!data.rates) {
-					let error = "No rates were returned from external api.";
+					let error = {message: "No rates were returned from external api."};
 					return cb(error, null);
 				}
 
