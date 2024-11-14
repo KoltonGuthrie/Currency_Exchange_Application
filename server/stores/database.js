@@ -5,10 +5,11 @@ import { getExchangeRates } from "../utils/get_exchange_rates.js"
 const SELECT_RATE_BY_DATE = "SELECT * FROM rate WHERE date = ?;";
 
 const CONVERT_TO_FROM = `
-						SELECT r1.currency_id AS "from",r3.currency_id AS "to",r1.date, 1 / r2.rate * r3.rate AS converted_rate
+						SELECT r1.currency_id AS "from",r3.currency_id AS "to",r1.date, r3.rate / r2.rate * r4.rate AS converted_rate
 						FROM rate AS r1
 						JOIN rate AS r2 ON r1.date = r2.date AND r2.currency_id = r1.currency_id
-						JOIN rate AS r3 ON r1.date = r3.date AND r3.currency_id = ?
+						JOIN rate AS r3 ON r1.date = r3.date AND r3.currency_id = "EUR" -- This is the default that the db is in
+						JOIN rate AS r4 ON r1.date = r4.date AND r4.currency_id = ?
 						WHERE r1.currency_id = ? AND r1.date = ?`;
 
 const SELECT_CURRENCY_BY_ID = "SELECT * FROM currency WHERE _id = ?;";
