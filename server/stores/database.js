@@ -18,12 +18,21 @@ const INSERT_PARTIAL_QUERY = "INSERT INTO rate (currency_id, rate, date) VALUES 
 
 const SELECT_CONVERSION_DATE = "SELECT * FROM rate WHERE date = ? LIMIT 1;"
 
+const SELECT_ALL_CURRENCY = "SELECT * FROM currency;";
+
 let db = new sqlite3.Database("./stores/currency.db", sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		console.error(err.message);
 	}
 	console.log("Connected to the database!");
 });
+
+function getAllCurrency(cb) {
+	db.all(SELECT_ALL_CURRENCY, (err, rows) => {
+		if(err) console.error(err);
+		return cb(err, rows);
+	})
+}
 
 function hasConversionDate(date = formatDate(new Date()), cb) {
 	db.get(SELECT_CONVERSION_DATE, date, (err, row) => {
@@ -129,5 +138,6 @@ function getAllRatesByDate(date, cb) {
 export {
     getAllRatesByDate,
 	getConversionRateToFrom,
-	isCurrency
+	isCurrency,
+	getAllCurrency
 };
