@@ -8,6 +8,40 @@ app.use(express.json());
 app.use(cors());
 app.use("/", express.static("public"));
 
+/*{
+    "success": true,
+    "symbols": {
+        "AED": "United 
+
+*/
+
+app.get("/api/exchange/symbols", (req, res) => {
+	const result = { success: false, error: "Internal Server Error." };
+	res.setHeader("Content-Type", "application/json");
+	res.status(500);
+
+	Database.getAllCurrency((err, rows) => {
+		if(err) {
+			result.error = err.message;
+
+			return res.send(result);
+		}
+		if(!rows || rows.length <= 0) {
+			return res.send(result);
+		}
+
+		let json = {};
+		rows.map((el) => json[el._id] = el.description );
+
+		result.error = undefined;
+		result.success = true;
+		result.symbols = json;
+
+		res.status(200);
+		return res.send(result);
+	});
+});
+
 /*
 
 Date is optional
