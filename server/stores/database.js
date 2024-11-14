@@ -87,8 +87,21 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 		if(!HAS_CONV) {
 			getExchangeRates(date, (err, data) => {
 				if(err) {
-					console.error(err.message);
 					return cb(err, null);
+				}
+
+				if(!data) {
+					let error = "No data was returned from external api.";
+					return cb(error, null);
+				}
+
+				if(data.error) {
+					return cb(data.error, null);
+				}
+
+				if(!data.rates) {
+					let error = "No rates were returned from external api.";
+					return cb(error, null);
 				}
 
 				addRates(data, (err, changes) => {
@@ -101,7 +114,6 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 
 					db.get(CONVERT_TO_FROM, [to, from, date], (err, row) => {
 						if (err) {
-							console.error(err.message);
 							return cb(err, null);
 						} else {
 							return cb(null, row);
@@ -114,7 +126,6 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 		} else {
 			db.get(CONVERT_TO_FROM, [to, from, date], (err, row) => {
 				if (err) {
-					console.error(err.message);
 					return cb(err, null);
 				} else {
 					return cb(null, row);
