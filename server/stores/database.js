@@ -5,10 +5,11 @@ import { getExchangeRates } from "../utils/get_exchange_rates.js"
 const SELECT_RATE_BY_DATE = "SELECT * FROM rate WHERE date = ?;";
 
 const CONVERT_TO_FROM = `
-						SELECT r1.currency_id AS "from",r3.currency_id AS "to",r1.date, 1 / r2.rate * r3.rate AS converted_rate
+						SELECT r1.currency_id AS "from",r3.currency_id AS "to",r1.date, r3.rate / r2.rate * r4.rate AS converted_rate
 						FROM rate AS r1
 						JOIN rate AS r2 ON r1.date = r2.date AND r2.currency_id = r1.currency_id
-						JOIN rate AS r3 ON r1.date = r3.date AND r3.currency_id = ?
+						JOIN rate AS r3 ON r1.date = r3.date AND r3.currency_id = "EUR" -- This is the default that the db is in
+						JOIN rate AS r4 ON r1.date = r4.date AND r4.currency_id = ?
 						WHERE r1.currency_id = ? AND r1.date = ?`;
 
 const SELECT_CURRENCY_BY_ID = "SELECT * FROM currency WHERE _id = ?;";
@@ -17,12 +18,21 @@ const INSERT_PARTIAL_QUERY = "INSERT INTO rate (currency_id, rate, date) VALUES 
 
 const SELECT_CONVERSION_DATE = "SELECT * FROM rate WHERE date = ? LIMIT 1;"
 
+const SELECT_ALL_CURRENCY = "SELECT * FROM currency;";
+
 let db = new sqlite3.Database("./stores/currency.db", sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		console.error(err.message);
 	}
 	console.log("Connected to the database!");
 });
+
+function getAllCurrency(cb) {
+	db.all(SELECT_ALL_CURRENCY, (err, rows) => {
+		if(err) console.error(err);
+		return cb(err, rows);
+	})
+}
 
 function hasConversionDate(date = formatDate(new Date()), cb) {
 	db.get(SELECT_CONVERSION_DATE, date, (err, row) => {
@@ -77,8 +87,21 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 		if(!HAS_CONV) {
 			getExchangeRates(date, (err, data) => {
 				if(err) {
-					console.error(err.message);
 					return cb(err, null);
+				}
+
+				if(!data) {
+					let error = {message: "No data was returned from external api."};
+					return cb(error, null);
+				}
+
+				if(data.error) {
+					return cb(data.error, null);
+				}
+
+				if(!data.rates) {
+					let error = {message: "No rates were returned from external api."};
+					return cb(error, null);
 				}
 
 				addRates(data, (err, changes) => {
@@ -91,7 +114,6 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 
 					db.get(CONVERT_TO_FROM, [to, from, date], (err, row) => {
 						if (err) {
-							console.error(err.message);
 							return cb(err, null);
 						} else {
 							return cb(null, row);
@@ -104,7 +126,6 @@ function getConversionRateToFrom({date = formatDate(new Date()), to, from}, cb) 
 		} else {
 			db.get(CONVERT_TO_FROM, [to, from, date], (err, row) => {
 				if (err) {
-					console.error(err.message);
 					return cb(err, null);
 				} else {
 					return cb(null, row);
@@ -128,5 +149,6 @@ function getAllRatesByDate(date, cb) {
 export {
     getAllRatesByDate,
 	getConversionRateToFrom,
-	isCurrency
+	isCurrency,
+	getAllCurrency
 };
