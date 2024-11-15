@@ -1,4 +1,4 @@
-import http from 'node:http';
+import http from "node:http";
 import { formatDate } from "./format_date.js";
 
 export function getExchangeRates(date = formatDate(new Date()), cb) {
@@ -8,7 +8,7 @@ export function getExchangeRates(date = formatDate(new Date()), cb) {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-            "apiKey": process.env.API_KEY,
+			apiKey: process.env.API_KEY,
 		},
 	};
 
@@ -20,15 +20,15 @@ export function getExchangeRates(date = formatDate(new Date()), cb) {
 			chunks.push(chunk);
 		});
 		res.on("end", () => {
-			let json = JSON.parse(chunks.join(''));
+			let json = JSON.parse(chunks.join(""));
 			return cb(null, json);
 		});
 	});
 
-    req.on('error', (err) => {
-        console.error(`Error: ${e.message}`);
-        return cb(err.message, null);
-    });
+	req.on("error", (err) => {
+		console.error(`Error: ${e.message}`);
+		return cb(err.message, null);
+	});
 
-    req.end();
+	req.end();
 }

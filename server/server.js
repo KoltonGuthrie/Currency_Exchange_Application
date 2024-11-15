@@ -14,17 +14,17 @@ app.get("/api/exchange/symbols", (req, res) => {
 	res.status(500);
 
 	Database.getAllCurrency((err, rows) => {
-		if(err) {
+		if (err) {
 			result.error = err.message;
 
 			return res.send(result);
 		}
-		if(!rows || rows.length <= 0) {
+		if (!rows || rows.length <= 0) {
 			return res.send(result);
 		}
 
 		let json = {};
-		rows.map((el) => json[el._id] = el.description );
+		rows.map((el) => (json[el._id] = el.description));
 
 		result.error = undefined;
 		result.success = true;
@@ -96,7 +96,7 @@ app.get("/api/exchange/convert", (req, res) => {
 				};
 				result.date = CONVERT_DATE;
 				result.result = row.converted_rate * CONVERT_AMOUNT;
-				
+
 				res.status(200);
 				return res.send(result);
 			});
