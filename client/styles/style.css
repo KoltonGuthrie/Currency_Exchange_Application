@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+}
+form {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 400px;
+    margin: 20px auto;
+    font-size: 14px;
+}
+label {
+    display: inline-block;
+    width: 150px;
+    margin-bottom: 10px;
+}
+select, input[type="number"], input[type="date"], input[type="submit"] {
+    width: 210px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+input[type="submit"] {
+    width: auto;
+    cursor: pointer;
+}
