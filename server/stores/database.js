@@ -4,7 +4,8 @@ import { getExchangeRates, getExchangeSymbols } from "../utils/get_exchange_rate
 
 const CREATE_CURRENCY_TABLE = "CREATE TABLE IF NOT EXISTS currency (_id text primary key, description text);";
 
-const CREATE_RATE_TABLE = "CREATE TABLE IF NOT EXISTS rate (currency_id text, date date, rate float, foreign key (currency_id) references currency (_id), primary key (currency_id, date));";
+const CREATE_RATE_TABLE =
+	"CREATE TABLE IF NOT EXISTS rate (currency_id text, date date, rate float, foreign key (currency_id) references currency (_id), primary key (currency_id, date));";
 
 const SELECT_RATE_BY_DATE = "SELECT * FROM rate WHERE date = ?;";
 
@@ -38,45 +39,39 @@ db.serialize(() => {
 	db.run(CREATE_RATE_TABLE);
 
 	db.get(SELECT_ALL_CURRENCY, (err, row) => {
-		if(err) throw err;
+		if (err) throw err;
 
-		if(!row) {
+		if (!row) {
 			// No data in currency. Add symbols
 			getExchangeSymbols((err, data) => {
-				if(err) throw err;
+				if (err) throw err;
 
-				if(data && data.success) {
-					
+				if (data && data.success) {
 					let arr = [];
-					
+
 					for (const key of Object.keys(data.symbols)) {
 						const value = data.symbols[key];
 						arr.push([key, value]);
 					}
-				
+
 					let parameters = [];
 					arr.map((_) => {
 						_.map((el) => parameters.push(el));
 					});
-				
+
 					let sql = INSERT_CURRENCY_PARTIAL_QUERY + arr.map((_) => "(?, ?)").join(", ");
-				
+
 					db.run(sql, parameters, function (err) {
 						if (err) {
 							throw err;
 						}
-				
+
 						console.log("Added " + this.changes + " currency symbols to database");
 					});
-
-
 				}
-
 			});
 		}
-	})
-
-	
+	});
 });
 
 function getAllCurrency(cb) {
