@@ -92,18 +92,6 @@ function hasConversionDate(date = formatDate(new Date()), cb) {
 	});
 }
 
-/*
-Can't do this. Date may have been updated but currency was null at time.
-
-const SELECT_HAS_CONVERSION = "SELECT * FROM rate WHERE (currency_id = ? OR currency_id = ?) AND date = ?;";
-
-function hasConversion({date = formatDate(new Date()), to, from}, cb) {
-	db.all(SELECT_HAS_CONVERSION, [to, from, date], (err, rows) => {
-		return cb(!err && rows.length >= 2)
-	});
-}
-*/
-
 function isCurrency(id, cb) {
 	db.get(SELECT_CURRENCY_BY_ID, id, (err, row) => {
 		return cb(row && !err);
