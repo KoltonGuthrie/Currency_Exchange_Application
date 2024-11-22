@@ -1,7 +1,5 @@
-const API_KEY = "bVxeOiYSUiBNStRHsov2HK7S9yOvwDCE";
-
 $.ajax({
-  url: `http://localhost:8080/api/exchange/symbols?apikey=${API_KEY}`,
+  url: `http://localhost:8080/api/exchange/symbols`,
   datatype: "json",
   success: (data) => updateSymbols(data.symbols),
 });
@@ -36,7 +34,7 @@ function convert() {
     return alert("You have not entered a valid date!");
 
   $.ajax({
-    url: `http://localhost:8080/api/exchange/convert?to=${currency_to}&from=${currency_from}&amount=${currency_amount}&date=${date}&apikey=${API_KEY}`,
+    url: `http://localhost:8080/api/exchange/convert?to=${currency_to}&from=${currency_from}&amount=${currency_amount}&date=${date}`,
     datatype: "json",
     success: (data) => updateResults(data),
   });
