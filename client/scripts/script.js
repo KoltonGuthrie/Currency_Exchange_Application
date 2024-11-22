@@ -2,6 +2,16 @@ $.ajax({
   url: `http://localhost:8080/api/exchange/symbols`,
   datatype: "json",
   success: (data) => updateSymbols(data.symbols),
+  error: (errorData) => {
+    errorData = errorData.responseJSON;
+
+    if(!errorData.success && errorData.error) {
+      alert(errorData.error);
+    } else {
+      alert(errorData);
+    }
+
+  }
 });
 
 function updateSymbols(symbols) {
@@ -36,7 +46,19 @@ function convert() {
   $.ajax({
     url: `http://localhost:8080/api/exchange/convert?to=${currency_to}&from=${currency_from}&amount=${currency_amount}&date=${date}`,
     datatype: "json",
-    success: (data) => updateResults(data),
+    success: (data) => {
+      updateResults(data)
+    },
+    error: (errorData) => {
+      errorData = errorData.responseJSON;
+
+      if(!errorData.success && errorData.error) {
+        alert(errorData.error);
+      } else {
+        alert(errorData);
+      }
+
+    }
   });
 }
 
