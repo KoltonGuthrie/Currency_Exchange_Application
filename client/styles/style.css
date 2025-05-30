@@ -1,26 +1,70 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Helvetica', Arial, sans-serif;
+    background-color: #f8f5f2;
+    margin: 0;
+    padding: 20px;
+    color: #2b2b2b;
 }
-form {
-    border: 1px solid #ccc;
-    padding: 15px;
-    width: 400px;
-    margin: 20px auto;
-    font-size: 14px;
+
+#convert_currency_form {
+    background-color: #fffdf7;
+    padding: 25px 20px;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
 }
+
 label {
-    display: inline-block;
-    width: 150px;
-    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    display: block;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-select, input[type="number"], input[type="date"], input[type="submit"] {
-    width: 210px;
-    padding: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
+
+select, input[type="number"], input[type="date"] {
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 1px solid #d9d9d9;
     border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
 }
+
+select:focus, input[type="number"]:focus, input[type="date"]:focus {
+    outline: none;
+    border-color: #3c8dbc;
+    box-shadow: 0 0 4px rgba(60, 141, 188, 0.2);
+}
+
 input[type="submit"] {
-    width: auto;
+    background-color: #3c8dbc;
+    color: #fff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
     cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+input[type="submit"]:hover {
+    background-color: #326f94;
+}
+
+#output {
+    margin-top: 18px;
+    padding: 12px;
+    background-color: #f0efeb;
+    border-left: 3px solid #3c8dbc;
+    font-size: 15px;
+    color: #2b2b2b;
+    text-align: left;
 }
