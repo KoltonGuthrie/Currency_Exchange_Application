@@ -1,16 +1,43 @@
-Remove the ```.example``` from the ```.env``` file and add your own ```API_KEY```
+# Electron - Currency Exchange Application
 
-The Exchange Rate Data API can be found [here](https://apilayer.com/marketplace/exchangerates_data-api).
+![Currency Conversion Calculator](https://github.com/user-attachments/assets/b8f7f55a-78e3-4716-a492-ba3e83f60bf4)
 
-Install the dependencies by running:
-```npm run install-dependencies```
+A simple Electron-based desktop application for converting currencies using real-time exchange rate data.
 
-Start the server by running:
-```npm run start-server```
+## Setup
 
-Start the client by running:
-```npm run start-client```
+To get started, follow these steps to configure and run the application locally.
 
-OR
+### 1. Configure the API Key
+- Rename the `.env.example` file to `.env`.
+- Sign up for an API key at the [Exchange Rates Data API](https://apilayer.com/marketplace/exchangerates_data-api).
+- Update the `.env` file by adding your `API_KEY`.
 
-All three of these steps can be done automatically by running the ```start.bat``` file.
+### 2. Install Dependencies
+Run the following command to install the required dependencies:
+```bash
+npm run install-dependencies
+```
+
+### 3. Run the Application
+You can start the server and client separately or use a single script to launch both.
+
+#### Option 1: Start Server and Client Separately
+- Start the server:
+  ```bash
+  npm run start-server
+  ```
+- Start the client:
+  ```bash
+  npm run start-client
+  ```
+
+#### Option 2: Run Automatically
+- Run the `start.bat` file to handle dependency installation, server, and client startup in one go:
+  ```bash
+  ./start.bat
+  ```
+
+## Notes
+- Ensure [Node.js](https://nodejs.org/) and npm are installed on your system.
+- The application uses the [Exchange Rates Data API](https://apilayer.com/marketplace/exchangerates_data-api) for real-time exchange rate data.
