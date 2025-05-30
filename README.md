@@ -1,6 +1,6 @@
 # Electron - Currency Exchange Application
 
-![Currency Conversion Calculator](https://github.com/user-attachments/assets/b8f7f55a-78e3-4716-a492-ba3e83f60bf4)
+<img src="https://github.com/user-attachments/assets/b8f7f55a-78e3-4716-a492-ba3e83f60bf4" alt="Currency Conversion Calculator" width="600">
 
 A simple Electron-based desktop application for converting currencies using real-time exchange rate data.
 
