@@ -4,11 +4,18 @@
 
 A simple Electron-based desktop application for converting currencies using real-time exchange rate data.
 
+## What is the this?
+The Currency Exchange Application is a user-friendly desktop tool designed to help you convert currencies effortlessly. Built using Electron, it works on Windows, macOS, and Linux, making it accessible no matter your operating system. The application fetches real-time and historical exchange rates from the Exchange Rates Data API, allowing you to perform conversions based on current market rates or rates from a specific date in the past.
+
+## How It Works
+The application is split into two parts: a client, which provides the interface where you select currencies and input amounts, and a server, which handles data retrieval and storage. To avoid overloading the external API, it stores exchange rate data in a local database, so repeated requests for the same data are served quickly from the cache. The server also offers a REST API, enabling the client to access both cached and real-time data efficiently.
+
 ## Setup
 
 To get started, follow these steps to configure and run the application locally.
 
 ### 1. Configure the API Key
+- Find the `.env.example` file located in the `server` folder
 - Rename the `.env.example` file to `.env`.
 - Sign up for an API key at the [Exchange Rates Data API](https://apilayer.com/marketplace/exchangerates_data-api).
 - Update the `.env` file by adding your `API_KEY`.
